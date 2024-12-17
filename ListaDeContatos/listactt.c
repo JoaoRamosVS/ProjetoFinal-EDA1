@@ -155,6 +155,24 @@ int insereCliente(Lista *li, CLIENTE cli) {
     }
 }
 
+
+void leituraLista(Lista *li, FILE *arq){
+    CLIENTE clienteLido;
+    while(!feof(arq)) {
+        fread(&clienteLido, sizeof(CLIENTE),1,arq);
+        insereCliente(li, clienteLido);
+    }
+}
+
+void gravaLista(Lista *li, FILE *arq) {
+    ELEM *no = *li;
+    while(no != NULL){
+        fwrite(&no->dados, sizeof(CLIENTE), 1, arq);
+        no = no->prox;
+    }
+    free(no);
+}
+
 void apresentaMenu() {
     printf("\t===== MENU - LISTA DE CONTATOS =====\n\n");
     printf("\tINSERIR CLIENTE - Digite 1\n\n");

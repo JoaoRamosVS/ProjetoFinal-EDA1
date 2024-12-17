@@ -25,3 +25,7 @@ void apresentaMenu();
 int consultaCodigo(Lista *li, int cod, CLIENTE *cli);
 
 int insereCliente(Lista *li, CLIENTE cli);
+
+void leituraLista(Lista *li, FILE *arq);
+
+void gravaLista(Lista *li, FILE *arq);

@@ -15,9 +15,9 @@ int main()
     }
 
     f = fopen("contatos.txt", "rb");
-    /*if(f != NULL) {
-
-    }*/
+    if(f != NULL) {
+        leituraLista(li,f);
+    }
     fclose(f);
     while(r != '7') {
         system("cls");
@@ -54,7 +54,8 @@ int main()
         exit(1);
     }
 
-
+    gravaLista(li, f);
     liberaLista(li);
+    fclose(f);
     return 0;
 }
