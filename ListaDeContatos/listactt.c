@@ -15,6 +15,60 @@ void abortaPrograma() {
     exit(1);
 }
 
+CLIENTE coletaDados() {
+    CLIENTE cli;
+    printf("Digite o codigo do cliente: ");
+    scanf("%d", &cli.codigo);
+    printf("Digite o nome do cliente: ");
+    fflush(stdin);
+    fgets(cli.nome, 49, stdin);
+    printf("Digite a empresa do cliente: ");
+    fgets(cli.empresa, 39, stdin);
+    printf("Digite o departamento do cliente: ");
+    fgets(cli.departamento, 24, stdin);
+    printf("Digite o telefone do cliente: ");
+    fgets(cli.telefone, 13, stdin);
+    printf("Digite o celular do cliente: ");
+    fgets(cli.celular, 14, stdin);
+    printf("Digite o email do cliente: ");
+    fgets(cli.email, 39, stdin);
+    return cli;
+}
+
+// Cria a lista dinâmica através do primeiro elemento e seu nó
+Lista *criaLista() {
+    Lista *li;
+    li = (Lista*) malloc(sizeof(Lista));
+    if(li != NULL){
+        *li = NULL;
+    }
+    return li;
+}
+
+// Verifica se a lista está sem elementos
+int listaVazia(Lista *li) {
+    if(li == NULL) {
+        abortaPrograma();
+    }
+    if(*li == NULL) {
+        return 1;
+    }
+    return 0;
+}
+
+// Libera a lista da memória, liberando a memória alocada por cada nó da lista
+void liberaLista(Lista *li){
+    if(li != NULL) {
+        ELEM *no;
+        while((*li) != NULL) {
+            no = *li;
+            *li =(*li)->prox;
+            free(no);
+        }
+        free(li);
+    }
+}
+
 /*
  * Consulta se existe um cliente com o código informado
  * Se sim, atribui o cliente ao endereço informado e retorna verdadeiro
@@ -36,6 +90,47 @@ int consultaCodigo(Lista *li, int cod, CLIENTE *cli) {
     else {
         *cli = no->dados;
         return 1;
+    }
+}
+
+int insereCliente(Lista *li, CLIENTE cli) {
+    if(li == NULL){
+        abortaPrograma();
+    }
+    ELEM *no = (ELEM*) malloc(sizeof(ELEM));
+    if(no == NULL) {
+        return 0;
+    }
+
+    CLIENTE cli_consulta;
+    int p = consultaCodigo(li, cli.codigo, &cli_consulta);
+    if(!p) {
+        no->dados = cli;
+        if(listaVazia(li)) {
+            no->prox = (*li);
+            *li = no;
+            return cli.codigo;
+        }
+        else {
+            ELEM *ant, *atual = *li;
+            while(atual != NULL && atual->dados.codigo < cli.codigo) {
+                ant = atual;
+                atual = atual->prox;
+            }
+            if(atual == *li) {
+                no->prox = (*li);
+                *li = no;
+            }
+            else {
+                no->prox = ant->prox;
+                ant->prox = no;
+            }
+            return cli.codigo;
+        }
+    }
+    else {
+        printf("\nEste codigo ja esta cadastrado. Tente novamente com outro codigo.");
+        return 0;
     }
 }
 
