@@ -47,6 +47,14 @@ int main()
      }
     break;
     */
+    f = fopen("contatos.txt", "wb");
+    if(f == NULL) {
+        printf("Erro na abertura do arquivo. Dados não serão salvos.\n\n");
+        system("pause");
+        exit(1);
+    }
+
+
     liberaLista(li);
     return 0;
 }

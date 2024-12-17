@@ -56,6 +56,20 @@ int listaVazia(Lista *li) {
     return 0;
 }
 
+// Retorna o número de elementos na lista através de váriavel contadora
+int tamanhoLista(Lista *li) {
+    if(li == NULL) {
+        abortaPrograma();
+    }
+    int acum=0;
+    ELEM *no = *li;
+    while(no != NULL) {
+        acum++;
+        no = no->prox;
+    }
+    return acum;
+}
+
 // Libera a lista da memória, liberando a memória alocada por cada nó da lista
 void liberaLista(Lista *li){
     if(li != NULL) {
@@ -93,6 +107,13 @@ int consultaCodigo(Lista *li, int cod, CLIENTE *cli) {
     }
 }
 
+
+/*
+ * Insere cliente já preenchido de maneira ordenada na lista de contatos
+ * É feita uma verificação de duplicidade nos códigos dos clientes antes da inserção
+ *
+ * Recebe como parâmetros a lista dinâmica e a struct cliente preenchida.
+*/
 int insereCliente(Lista *li, CLIENTE cli) {
     if(li == NULL){
         abortaPrograma();
@@ -103,8 +124,8 @@ int insereCliente(Lista *li, CLIENTE cli) {
     }
 
     CLIENTE cli_consulta;
-    int p = consultaCodigo(li, cli.codigo, &cli_consulta);
-    if(!p) {
+    int p = consultaCodigo(li, cli.codigo, &cli_consulta); // Aqui é feita a consulta na lista para verificação de duplicidade por código
+    if(!p) { // Se não encontrar o código informado
         no->dados = cli;
         if(listaVazia(li)) {
             no->prox = (*li);
@@ -128,7 +149,7 @@ int insereCliente(Lista *li, CLIENTE cli) {
             return cli.codigo;
         }
     }
-    else {
+    else { // Se encontrar o código informado, interrompe a inserção e retorna falso
         printf("\nEste codigo ja esta cadastrado. Tente novamente com outro codigo.");
         return 0;
     }

@@ -16,6 +16,8 @@ void abortaPrograma();
 
 Lista *criaLista();
 
+int tamanhoLista(Lista *li);
+
 void liberaLista(Lista *li);
 
 void apresentaMenu();
