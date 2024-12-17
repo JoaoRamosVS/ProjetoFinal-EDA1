@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1734398697 source:c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\listactt.c
+	<stdlib.h>
+	<stdio.h>
+	"listactt.h"
+
+1734411207 c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\listactt.h
+
+1734411088 source:c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\main.c
+	<stdio.h>
+	<stdlib.h>
+	"listactt.h"
+

@@ -9,3 +9,7 @@ typedef struct cliente{
 } CLIENTE;
 
 typedef struct elemento* Lista;
+
+void apresentaMenu();
+
+int consultaCodigo(Lista *li, int cod, CLIENTE *cli);
