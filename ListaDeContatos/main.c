@@ -6,6 +6,7 @@ int main(){
     int codigo=0, x=0, y=0;
     Lista *li = NULL;
     char r;
+    CLIENTE cli_consulta;
     FILE *f;
     printf("Hello branch joaorvs!\n");
 
@@ -14,9 +15,9 @@ int main(){
     }
 
     f = fopen("contatos.txt", "rb");
-    /*if(f != NULL) {
-
-    }*/
+    if(f != NULL) {
+        leituraLista(li,f);
+    }
     fclose(f);
 
     while(r != '7') {
@@ -26,16 +27,36 @@ int main(){
         switch(r) {
             case '1' :
                 system("cls");
-                CLIENTE novoCliente = coletaDados();
-                x = insereCliente(li, novoCliente);
+                CLIENTE novoCliente;
+                x = coletaDados(li, &novoCliente);
                 if(x) {
-                    printf("\n\nContato %d inserido com sucesso na lista de contatos!\n\n", x);
+                    insereCliente(li, novoCliente);
+                    if(x) {
+                        printf("\n\nContato %d inserido com sucesso na lista de contatos!\n\n", x);
+                    }
+                    else {
+                        printf("\n\nNao foi possivel inserir o cliente na lista de contatos.\n\n");
+                    }
                 }
                 else {
-                    printf("\n\nNao foi possivel inserir o cliente na lista de contatos.\n\n");
+                    printf("\n\nInsercao encerrada.\n\n");
                 }
 
                 system("pause");
+                break;
+
+                case '3' :
+                 system("cls");
+                 printf("Digite o codigo do cliente: ");
+                 scanf("%d", &codigo);
+                 x = consultaCodigo(li, codigo, &cli_consulta);
+                 if(x) {
+                    exibeCliente(cli_consulta);
+                 }
+                 else{
+                    printf("\n\nNao foi possivel encontrar este codigo na lista de contatos.\n\n");
+                 }
+                 system("pause");
                 break;
 
             case '5' :
@@ -64,18 +85,12 @@ int main(){
 
                 system("pause");
                 break;
+
+
+
         }
     }
 
-
-    /*case '3' :
-     system("cls");
-     printf("Digite o codigo do cliente: ");
-     scanf("%d", &codigo);
-     if(x) {
-        ...
-     }
-    break;
 
     f = fopen("contatos.txt", "wb");
     if(f == NULL) {
@@ -83,8 +98,9 @@ int main(){
         system("pause");
         exit(1);
     }
-    */
 
+    gravaLista(li, f);
     liberaLista(li);
+    fclose(f);
     return 0;
 }
