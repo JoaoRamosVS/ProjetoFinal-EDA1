@@ -90,20 +90,6 @@ int listaVazia(Lista *li) {
     return 0;
 }
 
-// Retorna o número de elementos na lista através de váriavel contadora
-int tamanhoLista(Lista *li) {
-    if(li == NULL) {
-        abortaPrograma();
-    }
-    int acum=0;
-    ELEM *no = *li;
-    while(no != NULL) {
-        acum++;
-        no = no->prox;
-    }
-    return acum;
-}
-
 // Libera a lista da memória, liberando a memória alocada por cada nó da lista
 void liberaLista(Lista *li){
     if(li != NULL) {
@@ -149,13 +135,18 @@ int consultaCodigo(Lista *li, int cod, CLIENTE *cli) {
 */
 int consultaNome(Lista *li, char* nome) {
     int z=0;
+    char nomeCliente[50], nome2[50];
+    apagarEnter(nome);
+    strcpy(nome2, nome);
+    strlwr(nome2);
     if(li == NULL){
         abortaPrograma();
     }
     ELEM *no = *li;
-    apagarEnter(nome);
     while(no != NULL) {
-        if(strstr(no->dados.nome, nome)){
+        strcpy(nomeCliente, no->dados.nome);
+        strlwr(nomeCliente);
+        if(strstr(nomeCliente, nome2)){
             exibeCliente(no->dados);
             z=1;
         }
@@ -233,23 +224,30 @@ void leituraLista(Lista *li, FILE *arq) {
         insereCliente(li, clienteLido);
     }
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int removeOrdenado(Lista *li, int cod){
-    int codigo;
 
+/*
+ * Remove ordenadamente seguindo a lógica da busca por código, onde após o tratamento de
+ * erros com os if's, cada node é iterado até encontrar o node especificado, e ao verificar que o seu
+ * código não é menor que os outros da lista, tem seu ponteiro "prox" repassado para o ponteiro
+ * "prox" do seu node antecessor para manter a integridade referencial da lista e deletar o node apontado.
+ *
+*/
+int removeCliente(Lista *li, int cod){
+    int codigo;
     if(li == NULL){
         abortaPrograma();
     }
 
     ELEM *ant, *no = *li;
-
     while(no != NULL && no->dados.codigo != cod){
         ant = no;
         no = no->prox;
     }
+
     if(no == NULL){
         return 0;
     }
+
     if(no == *li){
         *li = no->prox;
     } else {
@@ -257,16 +255,11 @@ int removeOrdenado(Lista *li, int cod){
     }
 
     codigo = no->dados.codigo;
-
-    free(no);
-
     return codigo;
 }
 /*
- * Função coletaDados simplficada e sem a possibilidade de se digitar um novo código.
- *
- *
- *
+ * Método coletaDados simplificado e sem a possibilidade de se digitar um novo código,
+ * utilizado para edição
 */
 CLIENTE editaDados() {
     CLIENTE cli;
@@ -286,20 +279,19 @@ CLIENTE editaDados() {
     return cli;
 }
 /*
- * A função edita recebe a lista e código como parâmetros e usa o código fornecido para buscar qual node editar
+ * Recebe a lista e código como parâmetros e usa o código fornecido para buscar qual node editar
  *
- * Após iterar por cada node e compara-los com o cod, chamamos a função consulta código para passar por referência a struct original para a variável local "cli"
- * , também chamamos a função exibeClientes para visualização do cliente que o usuário editará e a confirmação se dá por um if "s/n"
- * , após confirmar a edição, a struct nova é copiada para cima da struct velha e o codigo é atribuido diretamente do parâmetro para a nova struct.
+ * Após iterar por cada node e compara-los com o cod, chamamos a função consultaCodigo para passar por referência a struct original para a variável local "cli",
+ * também chamamos a função exibeCliente para visualização do cliente que o usuário editará e a confirmação se dá por um if "s/n"
+ * Após confirmar a edição, a struct nova é copiada para cima da struct velha e o codigo é atribuido diretamente do parâmetro para a nova struct.
 */
 
-int editaContato(Lista *li, int cod){
+int editaCliente(Lista *li, int cod){
     CLIENTE cli;
     char y;
     if(li == NULL){
         abortaPrograma();
     }
-    //////////////////////////////////////////
     ELEM *ant, *no = *li;
 
     while(no != NULL && no->dados.codigo != cod){
@@ -316,14 +308,12 @@ int editaContato(Lista *li, int cod){
     fflush(stdin);
     printf("\nDeseja editar esse registro? s/n\n");
     y = getchar();
-
     if(y == 's'){
         CLIENTE cli = editaDados();
         cli.codigo = cod;
         no->dados = cli;
-
         return 1;
-    } else{
+    } else {
         return 0;
     }
 }

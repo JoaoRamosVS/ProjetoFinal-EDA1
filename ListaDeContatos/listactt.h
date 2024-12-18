@@ -14,8 +14,6 @@ void abortaPrograma();
 
 Lista *criaLista();
 
-int tamanhoLista(Lista *li);
-
 void liberaLista(Lista *li);
 
 void apresentaMenu();
@@ -24,9 +22,9 @@ void exibeCliente(CLIENTE cli);
 
 int consultaCodigo(Lista *li, int cod, CLIENTE *cli);
 
-int removeOrdenado(Lista *li, int cod);
+int removeCliente(Lista *li, int cod);
 
-int editaContato(Lista *li, int cod);
+int editaCliente(Lista *li, int cod);
 
 CLIENTE editaDados();
 

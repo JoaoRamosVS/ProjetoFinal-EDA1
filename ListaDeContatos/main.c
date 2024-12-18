@@ -24,6 +24,7 @@ int main(){
     while(r != '7') {
         system("cls");
         apresentaMenu();
+        fflush(stdin);
         r = getchar();
         switch(r) {
             case '1' :
@@ -33,7 +34,7 @@ int main(){
                 if(x) {
                     x = insereCliente(li, novoCliente);
                     if(x) {
-                        printf("\n\nContato %d inserido com sucesso na lista de contatos!\n\n", x);
+                        printf("\n\nCliente %d inserido com sucesso na lista de contatos!\n\n", x);
                     }
                     else {
                         printf("\n\nNao foi possivel inserir o cliente na lista de contatos.\n\n");
@@ -83,33 +84,37 @@ int main(){
 
             case '5' :
                 system("cls");
-                printf("\n\nQual o codigo do cliente que deve ser editado?\n\n");
+                printf("Digite o codigo do cliente para edicao: ");
                 scanf("%d", &y);
-                x = editaContato(li, y);
+                printf("\n");
+                x = editaCliente(li, y);
                 if(x){
-                    printf("\n\nO contato nCOLOCAR AQUELA BOLINHA PEQUENA %d foi editado com sucesso!! \n\n", y);
+                    printf("\n\nO cliente %d foi editado com sucesso!\n\n", y);
                 } else {
-                    printf("\n\n %d %d >:( !! \n\n",x , y);
+                    printf("\n\nEdicao abortada.\n\n");
                 }
                 system("pause");
                 break;
 
             case '6' :
                 system("cls");
-                printf("\n\nQual o codigo do cliente que deve ser removido?\n\n");
+                printf("Digite o codigo do cliente para remocao: ");
                 scanf("%d", &y);
-                x = removeOrdenado(li, y);
+                x = removeCliente(li, y);
                 if(x){
-                    printf("\n\nO contato nCOLOCAR AQUELA BOLINHA PEQUENA%d foi removido com sucesso!! \n\n", y);
+                    printf("\n\nO cliente %d foi removido com sucesso!\n\n", y);
                 } else {
-                    printf("\n\n %d O contato nCOLOCAR AQUELA BOLINHA PEQUENA %d nao foi removido >:( !! \n\n",x , y);
+                    printf("\n\nNao foi possivel remover este cliente da lista.\n\n");
                 }
-
                 system("pause");
                 break;
 
+            case '7' :
+                break;
 
-
+            default :
+                printf("\n\nOpcao invalida, tente novamente!\n\n");
+                system("pause");
         }
     }
 
