@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "listactt.h"
 
 int main()
 {
     int codigo=0, x=0;
     Lista *li = NULL;
-    char r;
+    char r, buscaNome[50];
     CLIENTE cli_consulta;
     FILE *f;
     printf("Hello branch joaorvs!\n");
@@ -30,7 +31,7 @@ int main()
                 CLIENTE novoCliente;
                 x = coletaDados(li, &novoCliente);
                 if(x) {
-                    insereCliente(li, novoCliente);
+                    x = insereCliente(li, novoCliente);
                     if(x) {
                         printf("\n\nContato %d inserido com sucesso na lista de contatos!\n\n", x);
                     }
@@ -44,7 +45,16 @@ int main()
                 system("pause");
                 break;
 
-                case '3' :
+            case '2' :
+                system("cls");
+                x = consultaGeral(li);
+                if(!x) {
+                    printf("\n\nNao existem registros na lista de contatos.\n\n");
+                }
+                system("pause");
+                break;
+
+            case '3' :
                  system("cls");
                  printf("Digite o codigo do cliente: ");
                  scanf("%d", &codigo);
@@ -58,6 +68,17 @@ int main()
                  system("pause");
                 break;
 
+            case '4' :
+                    system("cls");
+                    printf("Digite o nome que deseja buscar: ");
+                    fflush(stdin);
+                    fgets(buscaNome, 49, stdin);
+                    x = consultaNome(li, buscaNome);
+                    if(!x) {
+                        printf("\n\nNao foi possivel encontrar este nome na lista de contatos.\n\n");
+                    }
+                    system("pause");
+                    break;
         }
     }
     f = fopen("contatos.txt", "wb");
