@@ -8,8 +8,6 @@ typedef struct cliente{
     char email[40];
 } CLIENTE;
 
-CLIENTE coletaDados();
-
 typedef struct elemento* Lista;
 
 void abortaPrograma();
@@ -24,7 +22,9 @@ void apresentaMenu();
 
 int consultaCodigo(Lista *li, int cod, CLIENTE *cli);
 
-int insereCliente(Lista *li, CLIENTE cli);
+int insereCliente(Lista *li, CLIENTE novoCliente);
+
+int coletaDados(Lista *li, CLIENTE *novoCliente);
 
 void leituraLista(Lista *li, FILE *arq);
 

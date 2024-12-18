@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1734461358 source:c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\listactt.c
+1734486365 source:c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\listactt.c
 	<stdlib.h>
 	<stdio.h>
 	"listactt.h"
 
-1734474576 c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\listactt.h
+1734480903 c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\listactt.h
 
-1734475881 source:c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\main.c
+1734486315 source:c:\projetos\ifsp\segundosemestre\projetofinal-eda1\listadecontatos\main.c
 	<stdio.h>
 	<stdlib.h>
 	"listactt.h"

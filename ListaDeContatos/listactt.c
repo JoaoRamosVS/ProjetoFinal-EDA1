@@ -15,10 +15,42 @@ void abortaPrograma() {
     exit(1);
 }
 
-CLIENTE coletaDados() {
-    CLIENTE cli;
-    printf("Digite o codigo do cliente: ");
-    scanf("%d", &cli.codigo);
+/*
+ * Coleta dados para inserção na lista, evitando duplicidade de códigos
+ *
+ * Recebe a lista para verificação de duplicidade de clientes já cadastrados e o ponteiro para armazenar os dados do novo cliente
+*/
+int coletaDados(Lista *li, CLIENTE *novoCliente) {
+    CLIENTE cli, cli_consulta;
+    int t=0, codigoExistente=0, tentarNovamente=1;
+    do{
+        t=0;
+        if(t==0 && tentarNovamente==1) {
+            printf("Digite o codigo do cliente: ");
+            scanf("%d", &cli.codigo);
+            t = consultaCodigo(li, cli.codigo, &cli_consulta); // Verifica duplicidade de codigos
+
+            if (t==1){ // Se encontrar duplicidade, oferece a opção para o usuário tentar novamente
+                system("cls");
+                printf("O codigo informado ja existe na lista.\n");
+                printf("Digite 1 para inserir outro numero\nDigite 0 para abortar a insercao\n");
+                printf("->: ");
+                scanf("%d", &tentarNovamente);
+
+                if (tentarNovamente==0) {
+                    codigoExistente = 1;  // Essa variável é para caso o usuario deseje abortar a inserçao
+                }
+            }
+            else{
+                tentarNovamente=0;
+            }
+        }
+    }while(t && tentarNovamente); // Enquanto a duplicidade se mostrar verdadeira e o usuário desejar tentar novamente
+
+    if(codigoExistente){
+        return 0; // Aborta insercao
+    }
+
     printf("Digite o nome do cliente: ");
     fflush(stdin);
     fgets(cli.nome, 49, stdin);
@@ -32,8 +64,9 @@ CLIENTE coletaDados() {
     fgets(cli.celular, 14, stdin);
     printf("Digite o email do cliente: ");
     fgets(cli.email, 39, stdin);
-    return cli;
-}
+    *novoCliente = cli;
+    return 1;
+    }
 
 // Cria a lista dinâmica através do primeiro elemento e seu nó
 Lista *criaLista() {
@@ -110,7 +143,6 @@ int consultaCodigo(Lista *li, int cod, CLIENTE *cli) {
 
 /*
  * Insere cliente já preenchido de maneira ordenada na lista de contatos
- * É feita uma verificação de duplicidade nos códigos dos clientes antes da inserção
  *
  * Recebe como parâmetros a lista dinâmica e a struct cliente preenchida.
 */
@@ -123,39 +155,36 @@ int insereCliente(Lista *li, CLIENTE cli) {
         return 0;
     }
 
-    CLIENTE cli_consulta;
-    int p = consultaCodigo(li, cli.codigo, &cli_consulta); // Aqui é feita a consulta na lista para verificação de duplicidade por código
-    if(!p) { // Se não encontrar o código informado
-        no->dados = cli;
-        if(listaVazia(li)) {
+    no->dados = cli;
+    if(listaVazia(li)) {
+        no->prox = (*li);
+        *li = no;
+        return cli.codigo;
+    }
+    else {
+        ELEM *ant, *atual = *li;
+        while(atual != NULL && atual->dados.codigo < cli.codigo) {
+            ant = atual;
+            atual = atual->prox;
+        }
+        if(atual == *li) {
             no->prox = (*li);
             *li = no;
-            return cli.codigo;
         }
         else {
-            ELEM *ant, *atual = *li;
-            while(atual != NULL && atual->dados.codigo < cli.codigo) {
-                ant = atual;
-                atual = atual->prox;
-            }
-            if(atual == *li) {
-                no->prox = (*li);
-                *li = no;
-            }
-            else {
-                no->prox = ant->prox;
-                ant->prox = no;
-            }
-            return cli.codigo;
+            no->prox = ant->prox;
+            ant->prox = no;
         }
-    }
-    else { // Se encontrar o código informado, interrompe a inserção e retorna falso
-        printf("\nEste codigo ja esta cadastrado. Tente novamente com outro codigo.");
-        return 0;
+        return cli.codigo;
     }
 }
 
-
+/*
+ * Realiza leitura dos dados salvos no arquivo binário, elemento por elemento
+ * e adiciona na lista
+ *
+ * Recebe como parâmetros a lista dinâmica e o arquivo binário já aberto no programa principal.
+*/
 void leituraLista(Lista *li, FILE *arq){
     CLIENTE clienteLido;
     while(!feof(arq)) {
@@ -164,6 +193,12 @@ void leituraLista(Lista *li, FILE *arq){
     }
 }
 
+/*
+ * Obtém dados salvos na lista elemento por elemento
+ * e realiza a escrita no arquivo binário
+ *
+ * Recebe como parâmetros a lista dinâmica e o arquivo binário já aberto no programa principal.
+*/
 void gravaLista(Lista *li, FILE *arq) {
     ELEM *no = *li;
     while(no != NULL){
@@ -183,4 +218,17 @@ void apresentaMenu() {
     printf("\tREMOVER CLIENTE - Digite 6\n\n");
     printf("\tSAIR DO PROGRAMA - Digite 7\n\n");
     printf("\t-------------------------------------\n->: ");
+}
+
+// Exibe os dados do cliente de maneira formatada
+void exibeCliente(CLIENTE cli) {
+    printf("\t=================================\n");
+    printf("\tCodigo: %d\n",cli.codigo);
+    printf("\tNome: %s\n",cli.nome);
+    printf("\tEmpresa: %s\n",cli.empresa);
+    printf("\tDepartamento: %s\n",cli.departamento);
+    printf("\tTelefone: %s\n",cli.telefone);
+    printf("\tCelular: %s\n",cli.celular);
+    printf("\tEmail: %s\n",cli.email);
+    printf("\t=================================\n");
 }
