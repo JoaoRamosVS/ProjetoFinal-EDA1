@@ -20,6 +20,8 @@ void liberaLista(Lista *li);
 
 void apresentaMenu();
 
+void exibeCliente(CLIENTE cli);
+
 int consultaCodigo(Lista *li, int cod, CLIENTE *cli);
 
 int removeOrdenado(Lista *li, int cod);
@@ -30,7 +32,11 @@ CLIENTE editaDados();
 
 void exibeCliente(CLIENTE cli);
 
-int insereCliente(Lista *li, CLIENTE novoCliente);
+int consultaNome(Lista *li, char *nome);
+
+int consultaGeral(Lista *li);
+
+int insereCliente(Lista *li, CLIENTE cli);
 
 int coletaDados(Lista *li, CLIENTE *novoCliente);
 

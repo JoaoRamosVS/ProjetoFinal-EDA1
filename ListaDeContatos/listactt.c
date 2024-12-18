@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "listactt.h"
 
 struct elemento {
@@ -140,6 +141,48 @@ int consultaCodigo(Lista *li, int cod, CLIENTE *cli) {
     }
 }
 
+/*
+ * Realiza a busca dentro da lista por clientes que contém a string informada dentro do nome do cliente.
+ *
+ * Recebe a lista dinâmica e o nome para busca como parametros.
+ * Exibe caso encontre e retorna verdadeiro, e se nao encontra apenas retorna falso.
+*/
+int consultaNome(Lista *li, char* nome) {
+    int z=0;
+    if(li == NULL){
+        abortaPrograma();
+    }
+    ELEM *no = *li;
+    apagarEnter(nome);
+    while(no != NULL) {
+        if(strstr(no->dados.nome, nome)){
+            exibeCliente(no->dados);
+            z=1;
+        }
+        no = no->prox;
+    }
+    return z;
+}
+
+/*
+ * Exibe o relatorio de todos os contatos
+ *
+ * Recebe a lista dinâmica como parametro.
+ * Caso nao tenham elementos na lista, retorna falso
+*/
+int consultaGeral(Lista *li) {
+    int z=0;
+    if(li == NULL){
+        abortaPrograma();
+    }
+    ELEM *no = *li;
+    while(no != NULL) {
+        exibeCliente(no->dados);
+        no = no->prox;
+        z=1;
+    }
+    return z;
+}
 
 /*
  * Insere cliente já preenchido de maneira ordenada na lista de contatos
@@ -184,10 +227,9 @@ int insereCliente(Lista *li, CLIENTE cli) {
  *
  * Recebe como parâmetros a lista dinâmica e o arquivo binário já aberto no programa principal.
 */
-void leituraLista(Lista *li, FILE *arq){
+void leituraLista(Lista *li, FILE *arq) {
     CLIENTE clienteLido;
-    while(!feof(arq)) {
-        fread(&clienteLido, sizeof(CLIENTE),1,arq);
+    while (fread(&clienteLido, sizeof(CLIENTE), 1, arq) == 1) {
         insereCliente(li, clienteLido);
     }
 }
@@ -299,7 +341,6 @@ void gravaLista(Lista *li, FILE *arq) {
         fwrite(&no->dados, sizeof(CLIENTE), 1, arq);
         no = no->prox;
     }
-    free(no);
 }
 
 void apresentaMenu() {
@@ -326,3 +367,12 @@ void exibeCliente(CLIENTE cli) {
     printf("\tEmail: %s\n",cli.email);
     printf("\t=================================\n");
 }
+
+// Método utilizado para apagar o \n obtido pelo fgets
+void apagarEnter(char *str) {
+    int tam = strlen(str);
+    if (tam > 0 && str[tam - 1] == '\n') {
+        str[tam - 1] = '\0';
+    }
+}
+
