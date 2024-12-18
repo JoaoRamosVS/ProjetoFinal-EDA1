@@ -38,6 +38,19 @@ int main(){
                 system("pause");
                 break;
 
+            case '5' :
+                system("cls");
+                printf("\n\nQual o codigo do cliente que deve ser editado?\n\n");
+                scanf("%d", &y);
+                x = editaContato(li, y);
+                if(x){
+                    printf("\n\nO contato nCOLOCAR AQUELA BOLINHA PEQUENA %d foi editado com sucesso!! \n\n", y);
+                } else {
+                    printf("\n\n %d %d >:( !! \n\n",x , y);
+                }
+                system("pause");
+                break;
+
             case '6' :
                 system("cls");
                 printf("\n\nQual o codigo do cliente que deve ser removido?\n\n");
@@ -53,7 +66,6 @@ int main(){
                 break;
         }
     }
-
 
 
     /*case '3' :

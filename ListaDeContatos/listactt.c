@@ -17,23 +17,25 @@ void abortaPrograma() {
 
 CLIENTE coletaDados() {
     CLIENTE cli;
-    printf("Digite o codigo do cliente: ");
+    printf("Digite o cod do cliente: ");
     scanf("%d", &cli.codigo);
-    printf("Digite o nome do cliente: ");
+
+    printf("Digite o nome do cliente atualizado: ");
     fflush(stdin);
     fgets(cli.nome, 49, stdin);
-    printf("Digite a empresa do cliente: ");
+    printf("Digite a empresa do cliente atualizado: ");
     fgets(cli.empresa, 39, stdin);
-    printf("Digite o departamento do cliente: ");
+    printf("Digite o departamento do cliente atualizado: ");
     fgets(cli.departamento, 24, stdin);
-    printf("Digite o telefone do cliente: ");
+    printf("Digite o telefone do cliente atualizado: ");
     fgets(cli.telefone, 13, stdin);
-    printf("Digite o celular do cliente: ");
+    printf("Digite o celular do cliente atualizado: ");
     fgets(cli.celular, 14, stdin);
-    printf("Digite o email do cliente: ");
+    printf("Digite o email do cliente atualizado: ");
     fgets(cli.email, 39, stdin);
     return cli;
 }
+
 
 // Cria a lista dinâmica através do primeiro elemento e seu nó
 Lista *criaLista() {
@@ -183,6 +185,58 @@ int removeOrdenado(Lista *li, int cod){
     free(no);
 
     return codigo;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CLIENTE editaDados() {
+    CLIENTE cli;
+    printf("Digite o nome do cliente atualizado: ");
+    fflush(stdin);
+    fgets(cli.nome, 49, stdin);
+    printf("Digite a empresa do cliente atualizado: ");
+    fgets(cli.empresa, 39, stdin);
+    printf("Digite o departamento do cliente atualizado: ");
+    fgets(cli.departamento, 24, stdin);
+    printf("Digite o telefone do cliente atualizado: ");
+    fgets(cli.telefone, 13, stdin);
+    printf("Digite o celular do cliente atualizado: ");
+    fgets(cli.celular, 14, stdin);
+    printf("Digite o email do cliente atualizado: ");
+    fgets(cli.email, 39, stdin);
+    return cli;
+}
+
+int editaContato(Lista *li, int cod){
+    char y;
+    if(li == NULL){
+        abortaPrograma();
+    }
+    //////////////////////////////////////////
+    ELEM *ant, *no = *li;
+
+    while(no != NULL && no->dados.codigo != cod){
+        ant = no;
+        no = no->prox;
+    }
+    if(no == NULL){
+        return 0;
+    }
+    ////////////////////////////////////////
+    // função consulta individual
+
+    fflush(stdin);
+    printf("Deseja editar esse registro? s/n");
+    y = getchar();
+
+    if(y == 's'){
+        CLIENTE cli = editaDados();
+        cli.codigo = cod;
+        no->dados = cli;
+
+        return 1;
+    } else{
+        return 0;
+    }
 }
 
 

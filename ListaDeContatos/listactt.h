@@ -27,3 +27,7 @@ int consultaCodigo(Lista *li, int cod, CLIENTE *cli);
 int insereCliente(Lista *li, CLIENTE cli);
 
 int removeOrdenado(Lista *li, int cod);
+
+int editaContato(Lista *li, int cod);
+
+CLIENTE editaDados();
